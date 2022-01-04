@@ -2,6 +2,7 @@
 import {
   CallHandler,
   ExecutionContext,
+  HttpException,
   Injectable,
   NestInterceptor
 } from '@nestjs/common';
@@ -71,6 +72,7 @@ export class SentryInterceptor implements NestInterceptor {
 
     scope.setExtra('req', data.request);
     
+    if (exception instanceof HttpException) scope.setExtra('res', exception.getResponse());
     if (data.extra) scope.setExtras(data.extra);
     if (data.user) scope.setUser(data.user);
 
